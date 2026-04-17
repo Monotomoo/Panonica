@@ -1,0 +1,41 @@
+export const solarProfile = {
+  annualIrradiance: 1382,
+  peakSunHours: 3.8,
+  monthlyIrradiance: [
+    { month: 'Jan', kwh: 52 },
+    { month: 'Feb', kwh: 71 },
+    { month: 'Mar', kwh: 112 },
+    { month: 'Apr', kwh: 141 },
+    { month: 'May', kwh: 168 },
+    { month: 'Jun', kwh: 175 },
+    { month: 'Jul', kwh: 184 },
+    { month: 'Aug', kwh: 166 },
+    { month: 'Sep', kwh: 125 },
+    { month: 'Oct', kwh: 89 },
+    { month: 'Nov', kwh: 55 },
+    { month: 'Dec', kwh: 44 },
+  ] as const,
+  benchmarks: [
+    { city: 'Madrid', kwh: 1820 },
+    { city: 'Split', kwh: 1547 },
+    { city: 'Beravci', kwh: 1382, highlight: true },
+    { city: 'Zagreb', kwh: 1289 },
+    { city: 'München', kwh: 1180 },
+  ] as const,
+  dailySunHoursByMonth: [
+    { month: 'Jan', hours: 1.7 },
+    { month: 'Feb', hours: 2.5 },
+    { month: 'Mar', hours: 3.6 },
+    { month: 'Apr', hours: 4.7 },
+    { month: 'May', hours: 5.4 },
+    { month: 'Jun', hours: 5.8 },
+    { month: 'Jul', hours: 5.9 },
+    { month: 'Aug', hours: 5.4 },
+    { month: 'Sep', hours: 4.2 },
+    { month: 'Oct', hours: 2.9 },
+    { month: 'Nov', hours: 1.8 },
+    { month: 'Dec', hours: 1.4 },
+  ] as const,
+};
+
+export type SolarProfile = typeof solarProfile;

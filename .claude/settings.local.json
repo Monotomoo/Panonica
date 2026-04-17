@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "Bash(git --version)",
+      "Bash(npm --version)",
+      "Bash(where pnpm *)",
+      "Bash(command -v pnpm)"
+    ]
+  }
+}

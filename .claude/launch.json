@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "panonica",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "panonica"],
+      "port": 3000
+    },
+    {
+      "name": "concessio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "concessio"],
+      "port": 3001
+    }
+  ]
+}

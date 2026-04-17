@@ -1,0 +1,107 @@
+/**
+ * Shared Paladian stylesheet.
+ * - Declares CSS variables consumed by tailwind.preset.cjs
+ * - Loads Monaspace Krypton from GitHub Next's CDN (OFL license)
+ * - Applies global defaults (dark canvas, anti-aliased text)
+ *
+ * Apps must import '@paladian/ui/fonts.css' from their entry (main.tsx).
+ * @fontsource-variable/{space-grotesk,instrument-serif,jetbrains-mono,inter}
+ * are imported from the app entry alongside this file.
+ */
+
+/* Monaspace Krypton is skipped for the prototype; JetBrains Mono Variable
+ * covers the mono role (loaded per-app via @fontsource-variable/jetbrains-mono).
+ * If we want to re-add Monaspace later, drop the woff2 files into apps/*/public/fonts/
+ * and re-declare @font-face from a local path rather than a CDN. */
+
+:root {
+  /* RGB triplets — consumed by Tailwind's rgb(var(--x) / <alpha>) pattern */
+  --canvas: 10 10 11;
+  --surface: 17 17 19;
+  --surface-raised: 23 23 26;
+  --border: 31 31 35;
+  --border-bright: 42 42 48;
+  --text-primary: 250 250 250;
+  --text-secondary: 138 138 148;
+  --text-muted: 82 82 91;
+
+  --pulse: 124 92 255;
+  --spark: 255 61 113;
+  --signal: 0 217 255;
+  --sun: 255 184 0;
+  --gold: 255 184 0;
+  --agri: 74 222 128;
+
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--text-primary));
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01' on, 'cv11' on;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Mono numerics — tabular figures everywhere */
+.font-mono,
+[class*='font-mono'] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' on, 'zero' on, 'ss01' on, 'ss02' on;
+}
+
+/* Small built-in utility used by several components */
+.underscore-cursor::after {
+  content: '_';
+  display: inline-block;
+  margin-left: 0.08em;
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Reset focus rings — shadcn primitives re-add their own */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgb(var(--pulse) / 0.6);
+  outline-offset: 2px;
+}
+
+/* Subtle scrollbar styling */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--border-bright));
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--text-muted));
+}

@@ -1,0 +1,35 @@
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/space-grotesk/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
+@import '@paladian/ui/fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply bg-canvas text-text-primary;
+  }
+}
+
+@layer utilities {
+  .mask-fade-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  }
+  .mask-fade-right {
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgb(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}

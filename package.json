@@ -1,0 +1,18 @@
+{
+  "name": "paladian-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Antigravity pitch prototypes for Ivan Paladina — Panonica + Concessio",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "panonica": "npm run dev --workspace=@paladian/panonica",
+    "concessio": "npm run dev --workspace=@paladian/concessio",
+    "build:panonica": "npm run build --workspace=@paladian/panonica",
+    "build:concessio": "npm run build --workspace=@paladian/concessio",
+    "build:all": "npm run build:panonica && npm run build:concessio",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
