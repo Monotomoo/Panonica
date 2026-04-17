@@ -11,7 +11,7 @@
 
 /* Monaspace Krypton is skipped for the prototype; JetBrains Mono Variable
  * covers the mono role (loaded per-app via @fontsource-variable/jetbrains-mono).
- * If we want to re-add Monaspace later, drop the woff2 files into apps/*/public/fonts/
+ * If we want Monaspace later, drop woff2 files into each app's public fonts dir
  * and re-declare @font-face from a local path rather than a CDN. */
 
 :root {
