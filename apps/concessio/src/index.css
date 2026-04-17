@@ -1,0 +1,37 @@
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/space-grotesk/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/fraunces/400.css';
+@import '@fontsource/fraunces/600.css';
+@import '@paladian/ui/fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply bg-canvas text-text-primary;
+  }
+}
+
+@layer utilities {
+  .font-editorial {
+    font-family: 'Instrument Serif', 'Fraunces', Georgia, serif;
+  }
+  .font-editorial-bold {
+    font-family: 'Fraunces', 'Instrument Serif', Georgia, serif;
+    font-weight: 600;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgb(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+}
