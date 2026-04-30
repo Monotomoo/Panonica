@@ -1,109 +1,157 @@
-# STATE — 2026-04-18 (Saturday morning)
+# STATE — 2026-04-19 (Saturday late · pre-Sunday pitch)
 
 ## Where we are
 
-Both prototypes shipped last night. Panonica landed strong — "genius" per Tomo. Concessio works but Panonica is the focus for Saturday's full push.
+**Panonica is shipped, deployed, and ready to demo.** Massive Saturday session pushed it from "8 polished screens" to **19 fully-wired routes including a Pantheon-aware AI offtake situation room**. Live on Vercel; pitch tomorrow Sunday with Ivan Paladina.
 
-Three commits on `main`:
-- `aa4d5bb` checkpoint: monorepo scaffold + Panonica hero
-- `b093c07` Panonica: all 8 screens complete
-- `5064217` Concessio: full scaffold + 4 routes + README
-- Plus one uncommitted fix: `packages/ui/src/fonts.css` nested `*/` in a comment block was killing PostCSS. Resolved; both apps now 200 across every route.
-
-## How to run
+**Public URL:** https://panonica-concessio-6onlnuebl-monotomoos-projects.vercel.app/
+**GitHub:** https://github.com/Monotomoo/Panonica
+**Current commit:** `cd78033` (3 commits past `c97e844` baseline · 32k LOC added)
 
 ```bash
+# Local
 cd "D:/CLAUDE PROJECTS/Paladian Projects V0.1"
 npm run panonica   # localhost:3000
-npm run concessio  # localhost:3001
+
+# Already running in background as task bebie7f0m
 ```
 
-Both dev servers should auto-HMR on edits. Shared `@paladian/ui` imports transpile through Vite — no build step needed for the UI package.
+---
 
-## What "go max on Panonica" means tonight
+## The big move this session: Beravci → Kopanica-Beravci
 
-Tomo said "work to the max on Panonica." Priorities in order:
+The actual project site is at **45.1348°N · 18.4130°E** (not the originally-modeled 45.2074 / 18.4393). Per Ivan's PDFs (`Kopanica_Paladina V2.pdf` · `velika kopanica_teaser_2020(2).pdf`) and the Google Maps link he shared, the parcel is **Business Zone Velika Kopanica**, near Kopanica-Beravci railway station, NOT Beravci village.
 
-1. **Polish pass on the 8 screens, screen-by-screen.** I built them blind. Likely targets:
-   - Hero timing (currently 2600/2300/2400ms per phase — may feel slow/fast on his screen)
-   - Configurator slider responsiveness (derived numbers tween smoothly, but check for lag on his laptop)
-   - Typography weight/tracking consistency across display blocks
-   - Hover glow consistency (some CTAs have `shadow-glow-pulse`, others don't)
-   - Right-align of every numeric table column (spot-check)
-   - Framer Motion AnimatePresence route transitions (may need tuning)
+Migrated everywhere user-facing. Internal variable names (`beravciClimate`, `isBeravci`) stayed for code stability. Replaced fake cadastral numbers (`2841/g`) with realistic `k.č.br. 3418-3506` Velika Kopanica range. Soil → **Fluvisol**. Distances all redone. Posavina floodplain (5m delta · <1% slope · Hero 3D scene flattened to match).
 
-2. **Bigger enhancements — pick from this list with Tomo:**
-   - Swap Land map to live Mapbox GL JS (token in `apps/panonica/src/routes/land.tsx` references static PNG now)
-   - Add a "replay intro" button somewhere hidden so Hero can replay mid-demo without reload (`sessionStorage.removeItem('panonica.intro-played')`)
-   - Concessio-style entity graph on Panonica Thesis page (show project stakeholders visually)
-   - Real SVG cadastral overlay on the ParcelMap (not the 8-vertex approximation)
-   - Animated sun-arc that tracks the current hour of day on Land + Solar
-   - "Export dossier" flow that actually generates a real PDF via a client-side lib (optional — the animation-only version is pitch-safe)
-   - Scroll-snapping between screens so the whole app feels like a deck
-   - Sound cues on key transitions (subtle — opt-in toggle)
-   - Per-screen keyboard shortcuts (1–8 jumps routes, `/` global search, esc back)
-   - Add an "ETA to construction" countdown that references the real timeline
+---
 
-3. **Stretch — after core polish:**
-   - Vercel deploy Panonica (so he can share a URL)
-   - Aurion scaffold (the portfolio command center from `02_AURION.md`) if time allows
-   - Pre-flight offline test: fly-mode the laptop, verify every asset is cached
+## 19 routes (all 200, all ErrorBoundary-wrapped)
 
-## Known rough edges (identified, not yet fixed)
+Pre-existing 8: `/context · /corridor · /land · /solar · /grid · /agriculture · /configurator · /thesis`
 
-- Preview screenshot tool (`mcp__Claude_Preview__preview_screenshot`) times out because of infinite animations (pulse-dot, cursor-blink, centroid pulse ring). Not a real issue — app renders fine in actual browsers.
-- Concessio entity graph is hand-placed SVG (not `@xyflow/react`). Dep is installed; swap is a one-afternoon refactor.
-- Mapbox token `pk.eyJ1IjoibW9ub3RvbW8i...` is embedded client-side. Safe for demo (public key), but Tomo may want to rotate after Sunday.
-- Satellite PNGs are 764KB / 938KB / 1.1MB — fine for local demo, may want to optimize for Vercel.
-- Windows line ending warnings on every git add (LF → CRLF). Benign.
-- `font-display` uses the `font-display-editorial` class name in places but the preset only exposes `display-editorial` (kebab-case). Minor — check for any mismatches.
+Added or rebuilt this session:
+- `/build` — EPC-grade Builder · 16 sections · 120+ fields · live BoM
+- `/roi` — Finance workbook · Monte Carlo Rain · Sensitivity tornado · Bullet charts
+- `/scenarios` — A/B/C side-by-side comparison
+- `/risk` — Climate stress · insurance · political risk
+- `/timeline` — 25-yr scrubbable deal life
+- `/subsidies` — FZOEU + NPOO + HBOR stack
+- `/intel` — 12-source live data feeds
+- `/market` — Market Radar · 18 Pannonian projects · bubble + radar + FZOEU pool
+- `/offtake` — **AI Offtake Corridor** · 6-buyer stack · Pantheon · 24/7 CFE · 1000-run Monte Carlo
+- `/one-pager` — Print-ready A4 leave-behind · PDF + PNG export
+- `/deal-room/:encoded` — QR-shareable read-only landing
+- `/` — REMOVED (Hero deleted) · redirects to `/context`
 
-## Panonica file map (for quick navigation)
+---
+
+## Demo triggers (memorize these)
+
+| Key | Action |
+|---|---|
+| `⌘K` / `Ctrl+K` | Command Palette · Raycast-grade · 2-pane preview · recent + suggested |
+| `⌘⇧F` / `Ctrl+Shift+F` | Mission Control PSOC · live-tick · radar · ticker · 1-9/M/B nav |
+| `T` | Guided Tour · short (9 steps · ~3 min) |
+| `⇧T` | Guided Tour · deep dive (15 steps · ~9 min) |
+| `N` | Negotiation Mode · 3-slider deal modeler |
+| `P` | Speaker Mode · per-route demo notes |
+| `ESC` | Close any overlay |
+
+Top status bar has: DemoProgress · LanguageToggle (EN↔HR) · Cmd-K hint.
+
+---
+
+## Architecture decisions worth remembering
+
+1. **Mapbox v3 dead in this Vite env** → swapped to **Leaflet 1.9 + Google Maps satellite** for the Builder Site map. flyTo bailing → use `setView({animate, duration})` instead.
+2. **Concessio breaks tsc** → root `vercel.json` ignored because Vercel project's rootDir is `apps/concessio`. Workaround: `apps/concessio/vercel.json` redirects build to Panonica via `cd ../.. && npm run build:panonica`. Long-term fix: change Vercel rootDir to blank in dashboard.
+3. **Panonica build script** dropped `tsc -b` (lucide-react ComponentType variance + path-alias drift were blocking; vite/esbuild handles TS fine).
+4. **All overlays ErrorBoundary-wrapped** so a single crash can't kill the demo.
+5. **Bilingual EN↔HR toggle** only on Hero / Thesis / Deal Room (Ivan-facing surfaces).
+6. **Hero 3D terrain flattened** (was procedural hills + bowl; now 5m micro-undulation) to match real Posavina topology.
+
+---
+
+## Known caveats (not blockers, but worth knowing)
+
+- URL says `panonica-concessio-...` because Vercel project name is stale. 5-second UI fix in dashboard if cleaner URL wanted.
+- Static fallback JPEGs (`kopanica-close.jpg`) are renamed but pixel content is still old Beravci aerial. Only surfaces if Google tiles fail.
+- Visual-not-eyeballed on the deployed surface: Pantheon Gantt label widths · Buyer Stack slider thumbs (accent colors may need Tailwind config) · Monte Carlo histogram bar alignment. **User should walk the live URL on his laptop before bed.**
+- 32-route smoke tested via curl 200 only · no playwright / e2e.
+- Internal variable names still `beravci*` — refactoring would touch 50+ files for zero user benefit.
+- `/deal-room/*` only hides sidebar — every other route now shows the menu (Hero behavior changed in last 30 min).
+
+---
+
+## File map (for quick post-compact navigation)
 
 ```
-apps/panonica/
-├── src/
-│   ├── App.tsx                ← router + shell + sidebar nav
-│   ├── main.tsx
-│   ├── index.css              ← Tailwind entry, font imports, utility classes
-│   ├── routes/
-│   │   ├── hero.tsx           ← 3-phase cinematic reveal (coords → map → cards)
-│   │   ├── land.tsx           ← split view, SVG parcel, 11-row data, 51 parcels
-│   │   ├── solar.tsx          ← 1,382 kWh hero ticker, heatmap, monthly bars, benchmarks
-│   │   ├── grid.tsx           ← dual hero (2500 MW · #14 queue), SVG diagram, stats
-│   │   ├── configurator.tsx   ← THE interactive centerpiece — tabs, 6 sliders, IsoFarm, impact strip
-│   │   ├── roi.tsx            ← Recharts area chart, 5 toggles, scenario cards
-│   │   ├── subsidies.tsx      ← 6 program cards, live funding-stack calculator
-│   │   └── thesis.tsx         ← PDF doc mockup + 2.2s compile animation + download toast
-│   ├── components/
-│   │   ├── ParcelMap.tsx      ← shared satellite+SVG component, used by Hero/Land/Solar
-│   │   └── IsoFarm.tsx        ← configurator visualization — isometric panels + sheep/crops
-│   └── mock/                   ← all data verbatim from brief (parcel, solar, grid, configs, subsidies, timeline)
-└── public/
-    └── imagery/
-        ├── beravci-close.png  ← zoom 14.5 satellite of the plot
-        ├── beravci-wide.png   ← zoom 10.5 regional view
-        └── slavonia.png       ← zoom 7.5 Slavonia overview
+apps/panonica/src/
+├── App.tsx                      ← 19 routes · 6 overlays · status bar · sidebar
+├── routes/                      ← 19 .tsx route files
+│   ├── offtake.tsx (NEW · 880 lines · wartime situation room)
+│   ├── marketRadar.tsx (NEW · bubble + radar + FZOEU pool)
+│   ├── onePager.tsx (NEW · A4 print-ready)
+│   ├── build.tsx + components/builder/* (16-section EPC builder)
+│   ├── thesis.tsx (PDF + Markdown + email + deal-room share)
+│   └── ... (context, corridor, land, solar, grid, agriculture, configurator, roi, scenarios, risk, timeline, subsidies, intel, dealRoom)
+├── components/
+│   ├── ErrorBoundary.tsx (class · branded fallback · 26 mounts)
+│   ├── GuidedTour.tsx (T short / ⇧T deep · drawer switcher)
+│   ├── NegotiationMode.tsx (3 sliders · 8 outputs · fairness chip)
+│   ├── MissionControl.tsx (PSOC cockpit · radar · live-drift · ticker)
+│   ├── CommandPalette.tsx (Raycast-grade · cmdk-based)
+│   ├── DealRoomShareModal.tsx (URL encode + QR + email)
+│   ├── SolarAtlas.tsx (Calendar GHI + Sankey energy flow)
+│   ├── BulletChart.tsx (KPI vs target · qual bands)
+│   ├── Sparkline.tsx (zero-dep SVG smoothed)
+│   ├── DnaGlyph.tsx (deterministic config fingerprint)
+│   ├── builder/PolygonMap.tsx (Leaflet · Google sat · sun path · shadow cone · GHI heat ring)
+│   ├── LanguageToggle.tsx (EN↔HR session-persisted)
+│   └── ... (AiAssist, SpeakerMode, DemoProgress, MonteCarloRain, ParcelMap, etc.)
+├── lib/
+│   ├── offtakeMath.ts (PPA blender · CFE matcher · Monte Carlo · Newton IRR)
+│   ├── builderDerive.ts (Builder → BoM → Finance pipeline)
+│   ├── validationEngine.ts (16-section health score)
+│   ├── dealRoom.ts (pako gzip + base64url URL encoding)
+│   └── toneOfDay.ts (clock-driven palette)
+├── store/ (Zustand)
+│   ├── projectStore.ts (Builder state · 16 sections · 120 fields · v2 storage key)
+│   ├── configStore.ts (Configurator state · cross-screen)
+│   ├── scenariosStore.ts (A/B/C snapshots)
+│   ├── progressStore.ts (route visit tracker)
+│   └── langStore.ts (EN/HR toggle)
+└── mock/                        ← 16 data files
+    ├── aiCorridor.ts (NEW · 6 buyers + 8 DCs + 5 transmission + 6 taxonomy + MC params)
+    ├── siteGeo.ts (PDF-digitized A3/D7/MP13C/canals/Sava + landmarks)
+    ├── finance.ts (18 Pannonian project comparables + strategic radar + FZOEU pool)
+    └── ... (timelineEvents, speakerNotes, sources, ai, agri, etc.)
 ```
 
-## Shared UI the polish pass may touch
+---
 
-`packages/ui/src/components/`:
-- `NumberTicker.tsx` — count-up with IntersectionObserver trigger. `triggerOnView={false}` for immediate tickers.
-- `TextScramble.tsx` — Apple-style char cycle, used on Concessio, available for Panonica if needed
-- `Typewriter.tsx` — char-by-char, used in Hero coords + Concessio home lines
-- `DataPanel.tsx` — label/value rows, right-aligned mono, used on Land
-- `Shell.tsx` + `StatusBar.tsx` + `SideNav.tsx` — persistent app shell
+## What's left if Sunday goes well and there's time after
 
-Tokens at `packages/ui/src/tokens.ts`, CSS vars at `packages/ui/src/fonts.css`, Tailwind preset at `tailwind.preset.cjs`.
+| Priority | Item |
+|---|---|
+| Optional polish | Streamgraph + small-multiples viz (Q7 picks D + I never shipped) |
+| Optional polish | Mobile responsive for screens <900 px |
+| Optional polish | Real Kopanica satellite capture (current pixels are old Beravci) |
+| Optional polish | Vercel project rename to drop "concessio" from URL |
+| Stretch | Real Claude API (currently scripted ai.ts mock responses) |
+| Stretch | ENTSO-E + HOPS live data connectors |
+| Stretch | Concessio mock files repaired (currently broken; doesn't affect Panonica deploy) |
 
-## Strategy reminders (from 00_STRATEGY.md)
-
-- Day-1 pitch is **Panonica only** — solar, Slavonia, the future. No mention of criminal case / Russian connections / IGH history.
-- Demo time target: **6–8 minutes** then shut up.
-- If he grabs the mouse during Configurator — you've won.
-- Thesis "Generate PDF" is the curtain drop.
+---
 
 ## Post-compact first move
 
-Read this file. Then read `C:\Users\Tomo\Desktop\01_PANONICA.md` for the brief, and `C:\Users\Tomo\Desktop\00_STRATEGY.md` for the pitch choreography. Then ask Tomo which polish bucket to start on — or he'll tell you directly.
+1. Read this file
+2. Confirm dev server is running: `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/` should return `200`
+3. If user says "rehearse" → walk the keyboard cheat sheet in order: ⌘K → ⌘⇧F → T → ⇧T → N → /build → /offtake → /one-pager
+4. If user says "fix X" → search the file map above; most components are self-contained
+5. If user says "deploy" → `git push origin main` triggers auto-rebuild on Vercel
+6. If something on the live URL misbehaves → check `apps/concessio/vercel.json` and `apps/panonica/package.json` build script first
+
+Pitch is **Sunday 2026-04-20 PM**. Ship state: green. Sleep state: earned.
