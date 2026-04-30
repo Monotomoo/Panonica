@@ -1,14 +1,19 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Box, Map as MapIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { NumberTicker, Typewriter, cn } from '@paladian/ui';
 import { ParcelMap } from '@/components/ParcelMap';
 import { beravciParcel } from '@/mock/parcel';
+import { useLangStore, tr } from '@/store/langStore';
+
+// Lazy-loaded so three.js only ships if the user actually asks for 3D
+const HeroScene3D = lazy(() => import('@/components/HeroScene3D').then((m) => ({ default: m.HeroScene3D })));
 
 const SESSION_KEY = 'panonica.intro-played';
 
 export function HeroRoute() {
+  const lang = useLangStore((s) => s.lang);
   const [phase, setPhase] = useState<'coords' | 'map' | 'meta' | 'done'>(() =>
     typeof window !== 'undefined' && window.sessionStorage.getItem(SESSION_KEY)
       ? 'done'
@@ -40,20 +45,35 @@ export function HeroRoute() {
   const metaVisible = phase === 'meta' || phase === 'done';
   const ctaVisible = phase === 'done';
 
+  // User-toggleable 3D mode. Persisted to sessionStorage so Tomo can
+  // leave it on across navigation during the demo.
+  const [view3D, setView3D] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.sessionStorage.getItem('panonica.hero.3d') === '1';
+  });
+
+  const toggle3D = () => {
+    setView3D((v) => {
+      const next = !v;
+      window.sessionStorage.setItem('panonica.hero.3d', next ? '1' : '0');
+      return next;
+    });
+  };
+
   return (
     <section className="relative flex h-[calc(100vh-2.75rem)] w-full overflow-hidden bg-canvas">
       {/* Background map layer — fades and scales in during 'map' phase */}
       <motion.div
         initial={{ opacity: 0, scale: 1.08 }}
         animate={{
-          opacity: mapVisible ? 1 : 0,
+          opacity: mapVisible && !view3D ? 1 : view3D ? 0 : 0,
           scale: mapVisible ? 1 : 1.08,
         }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0"
       >
         <ParcelMap
-          backgroundUrl="/imagery/beravci-close.png"
+          backgroundUrl="/imagery/kopanica-close.jpg"
           imageOpacity={0.78}
           drawOnMount={mapVisible}
           drawDelay={0.4}
@@ -62,6 +82,58 @@ export function HeroRoute() {
           showCentroidPulse
         />
       </motion.div>
+
+      {/* 3D Beravci scene — fades in when 3D view is enabled */}
+      <AnimatePresence>
+        {view3D && mapVisible && (
+          <motion.div
+            key="3d"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0"
+            aria-label="Kopanica-Beravci · 3D diorama"
+          >
+            <Suspense
+              fallback={
+                <div className="flex h-full w-full items-center justify-center font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+                  loading 3D diorama · three.js…
+                </div>
+              }
+            >
+              <HeroScene3D active={view3D} />
+            </Suspense>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 2D/3D toggle — only visible once past the coord reveal */}
+      <AnimatePresence>
+        {mapVisible && (
+          <motion.button
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            onClick={toggle3D}
+            title={view3D ? 'Switch to satellite map' : 'Enter 3D diorama'}
+            className="absolute left-12 bottom-10 z-20 inline-flex items-center gap-2 rounded-md border border-border-bright bg-surface/80 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-text-secondary backdrop-blur transition-all hover:border-pulse hover:text-pulse hover:shadow-glow-pulse"
+          >
+            {view3D ? (
+              <>
+                <MapIcon className="h-3 w-3" strokeWidth={1.8} />
+                satellite
+              </>
+            ) : (
+              <>
+                <Box className="h-3 w-3 text-pulse animate-pulse-dot" strokeWidth={1.8} />
+                enter 3D
+              </>
+            )}
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Grid backdrop (visible during coords phase) */}
       <AnimatePresence>
@@ -114,9 +186,9 @@ export function HeroRoute() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="font-display text-[clamp(2rem,5vw,4rem)] font-light uppercase leading-[0.95] tracking-[0.18em] text-text-primary"
             >
-              pannonian
+              {tr('pannonian', 'panonska', lang)}
               <br />
-              solar intelligence
+              {tr('solar intelligence', 'solarna inteligencija', lang)}
             </motion.div>
             <motion.p
               initial={{ opacity: 0 }}
@@ -124,9 +196,17 @@ export function HeroRoute() {
               transition={{ duration: 0.8, delay: 0.15 }}
               className="mt-4 max-w-md font-mono text-[12px] uppercase tracking-[0.22em] text-text-secondary"
             >
-              an investment-grade view of croatia's first-mover
+              {tr(
+                "an investment-grade view of croatia's first-mover",
+                'investicijska slika hrvatskog prvopotezača',
+                lang,
+              )}
               <br />
-              agrivoltaic land bank — parcel, panel, grid, euro.
+              {tr(
+                'agrivoltaic land bank — parcel, panel, grid, euro.',
+                'agrivoltažna land banka — parcela, panel, mreža, euro.',
+                lang,
+              )}
             </motion.p>
           </div>
         </div>
@@ -149,14 +229,14 @@ export function HeroRoute() {
             className="absolute bottom-10 right-12 z-20"
           >
             <Link
-              to="/land"
+              to="/context"
               className={cn(
                 'group inline-flex items-center gap-3 rounded-md border border-border-bright px-5 py-3',
                 'bg-surface/80 backdrop-blur transition-all hover:border-pulse hover:shadow-glow-pulse',
               )}
             >
               <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-secondary group-hover:text-pulse">
-                enter land view
+                {tr('why now · why here', 'zašto sada · zašto ovdje', lang)}
               </span>
               <ArrowRight
                 className="h-3.5 w-3.5 text-text-secondary transition-transform group-hover:translate-x-0.5 group-hover:text-pulse"
